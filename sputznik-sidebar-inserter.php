@@ -11,6 +11,11 @@ Text Domain: sputznik-sidebar-inserter
 
 if( ! defined( 'ABSPATH' ) ){ exit; }
 
+/*  CONSTANTS */
+if( !defined( 'SP_SBINS_BASE' ) ){
+  define( 'SP_SBINS_BASE', plugin_basename( __FILE__ ) );
+}
+
 // INCLUDE FILES
 $inc_files = array(
   'class-sp-sbins-base.php',

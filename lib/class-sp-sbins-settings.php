@@ -11,8 +11,9 @@ class SP_SBINS_SETTINGS extends SP_SBINS_BASE {
 
     $this->read_settings();
 
-    add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-
+    add_action( 'admin_menu', array( $this, 'admin_menu' ) ); // SETTINGS PAGE
+		add_action( 'plugin_action_links_'.SP_SBINS_BASE, array( $this, 'plugin_action_links' ) ); // PLUGIN ACTION LINKS
+    
   }
 
   private function get_post_types(){
@@ -76,7 +77,7 @@ class SP_SBINS_SETTINGS extends SP_SBINS_BASE {
     );
   }
 
-  /* SETTINGS PAGE */
+  /* SETTINGS PAGE TEMPLATE */
   function settings_page(){
     include( "settings/templates/sp-sbins-settings.php" );
   }
@@ -120,6 +121,11 @@ class SP_SBINS_SETTINGS extends SP_SBINS_BASE {
       include $screens[$active_tab]['template'];
     }
 
+  }
+
+  function plugin_action_links( $links ){
+    $links['settings'] = '<a href="'.admin_url( 'options-general.php?page=sp-sbins-settings' ).'">'.__( 'Settings', 'sputznik-sidebar-inserter' ).'</a>';
+    return $links;
   }
 
 }
