@@ -2,7 +2,6 @@
 
 class SP_SBINS_SETTINGS extends SP_SBINS_BASE {
 
-  private $menus;
   private $settings;
   private $settings_slug;
 
@@ -11,13 +10,6 @@ class SP_SBINS_SETTINGS extends SP_SBINS_BASE {
     $this->settings_slug = 'sp_sbins_settings';
 
     $this->read_settings();
-
-    $this->menus = array(
-      'sp-sbins-settings' => array(
-        'title'	=> 'Sputznik Sidebar',
-        'icon'	=> 'dashicons-editor-kitchensink'
-      )
-    );
 
     add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
@@ -38,6 +30,7 @@ class SP_SBINS_SETTINGS extends SP_SBINS_BASE {
     unset( $types['orbit-form'] );
     unset( $types['orbit-tmp'] );
     unset( $types['orbit-fep'] );
+    unset( $types['guest-author'] );
 
     foreach( $types as $type_slug => $type ){
       $type_object = get_post_type_object( $type_slug );
@@ -74,24 +67,21 @@ class SP_SBINS_SETTINGS extends SP_SBINS_BASE {
   /* GETTER AND SETTER FUNCTIONS */
 
   function admin_menu(){
-    foreach( $this->menus as $slug => $menu_item ){
-      $menu_item['slug'] = $slug;
-      // CHECK FOR MAIN MENU OR SUB MENU
-      if( !isset( $menu_item['menu'] ) ){
-        add_menu_page( $menu_item['title'], $menu_item['title'], 'manage_options', $menu_item['slug'], array( $this, 'menu_page' ), $menu_item['icon'] );
-      } else{
-        add_submenu_page( $menu_item['menu'], $menu_item['title'], $menu_item['title'], 'manage_options', $menu_item['slug'], array( $this, 'menu_page' ) );
-      }
-    }
+    add_options_page(
+      __( 'Sputznik Sidebar', 'sputznik-sidebar-inserter' ),
+      __( 'Sputznik Sidebar', 'sputznik-sidebar-inserter' ),
+      'manage_options',
+      'sp-sbins-settings',
+      array( $this, 'settings_page' )
+    );
   }
 
-  /* MENU PAGE */
-  function menu_page(){
-    $page = $_GET[ 'page' ];
-    include( 'settings/templates/'.$page.'.php' );
+  /* SETTINGS PAGE */
+  function settings_page(){
+    include( "settings/templates/sp-sbins-settings.php" );
   }
 
-  private function tabs( $screens, $base_url = 'admin.php?page=sp-sbins-settings', $disable_tab = false ){
+  private function tabs( $screens, $base_url = 'options-general.php?page=sp-sbins-settings', $disable_tab = false ){
 
     $common_url = admin_url( $base_url );
 
