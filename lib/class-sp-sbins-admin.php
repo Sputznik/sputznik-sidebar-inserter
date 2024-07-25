@@ -85,8 +85,8 @@ class SP_SBINS_ADMIN extends SP_SBINS_BASE {
 
   function save_meta_box( $post_id ){
 
-    // RETURN IF CURRENT POST TYPE IS NOT PRESENT IN THE ACTIVE POST TYPES LIST
-    if( !in_array( $_POST['post_type'], $this->get_active_types() ) ) return;
+    // RETURN IF IT'S AN AUTOSAVE
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 
     // RETURN IF NONCE IS NOT SET
     if ( ! isset( $_POST['sp_sbins_sidebar_metabox_nonce'] ) ) return;
@@ -94,22 +94,15 @@ class SP_SBINS_ADMIN extends SP_SBINS_BASE {
     // RETURN IF NONCE IS NOT VALID
     if ( ! wp_verify_nonce( $_POST['sp_sbins_sidebar_metabox_nonce'], 'sp_sbins_sidebar_metabox' ) ) return;
 
-    // RETURN IF IT'S AN AUTOSAVE
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+    // RETURN IF CURRENT POST TYPE IS NOT PRESENT IN THE ACTIVE POST TYPES LIST
+    if( !in_array( $_POST['post_type'], $this->get_active_types() ) ) return;
 
     // UPDATE METAFIELD
     if( isset( $_POST[$this->post_meta_key] ) && $_POST[$this->post_meta_key] ){
       update_post_meta( $post_id, $this->post_meta_key, $_POST[$this->post_meta_key] );
     }
 
-    // echo "<pre>";
-    // print_r( $_POST );
-    // echo "</pre>";
-    // wp_die();
-
-
   }
-
 
 }
 
