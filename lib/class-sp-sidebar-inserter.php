@@ -3,7 +3,7 @@
 class SP_SIDEBAR_INSERTER extends SP_SBINS_BASE {
 
   function __construct(){
-    add_action( 'the_content', array( $this, 'sidebar_inserter' ) );
+    add_filter( 'the_content', array( $this, 'sidebar_inserter' ) );
   }
 
   // GET SIDEBAR CONTENT
@@ -15,6 +15,10 @@ class SP_SIDEBAR_INSERTER extends SP_SBINS_BASE {
 
   function sidebar_inserter( $content ){
     $sp_sbins_admin = SP_SBINS_ADMIN::getInstance();
+
+
+    // RETURN IF POST CONTENT IS EMPTY
+    if( !( strlen( $content ) > 0 ) ) return $content;
 
     // RETURN IF THE:
     // CURRENT POST TYPE IS NOT PRESENT IN THE ACTIVE TYPES
@@ -41,8 +45,8 @@ class SP_SIDEBAR_INSERTER extends SP_SBINS_BASE {
       );
     }
 
-    $is_disabled = isset( $sp_sbins_post_meta['disabled'] ) ? $sp_sbins_post_meta['disabled'] : 0; // Default false
-    $placement = isset( $sp_sbins_post_meta['placement'] ) ? $sp_sbins_post_meta['placement'] : 4; // Default 4
+    $is_disabled = isset( $sp_sbins_post_meta['disabled'] ) ? (bool) $sp_sbins_post_meta['disabled'] : false; // Default false
+    $placement = isset( $sp_sbins_post_meta['placement'] ) ? (int) $sp_sbins_post_meta['placement'] : 4; // Default 4
 
     // echo "<pre>";
     // echo "placement: ".$placement."<br/>";
@@ -59,7 +63,6 @@ class SP_SIDEBAR_INSERTER extends SP_SBINS_BASE {
     } elseif( $placement < 0 ){
       return $content.$inline_sidebar_content;
     } else {
-      // echo "No sidebar_post_meta found <br/>";
       return $this->insert_between_content( $content, $placement );
     }
 
@@ -105,7 +108,8 @@ class SP_SIDEBAR_INSERTER extends SP_SBINS_BASE {
 
   private function get_dom_document( $content ){
     $doc = new DOMDocument();
-    @$doc->loadHTML( mb_convert_encoding( $content, 'HTML-ENTITIES', 'UTF-8' ) );
+    // DOMDocument doesn't support html5 tags. Hence, we are using LIBXML_NOERROR to suppress html5 errors
+    $doc->loadHTML( mb_convert_encoding( $content, 'HTML-ENTITIES', 'UTF-8' ), LIBXML_NOERROR );
     return $doc;
   }
 
