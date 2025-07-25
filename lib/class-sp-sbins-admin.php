@@ -13,8 +13,8 @@ class SP_SBINS_ADMIN extends SP_SBINS_BASE {
     // LIST OF CUSTOM SIDEBARS
     $this->sidebars = array(
       'sp-sbins-default-sidebar'	=> array(
-        'name' 				=> __( 'Single Post Inline Widgets', 'sputznik-sidebar-inserter' ),
-        'description' => __( 'Appears in the single post content', 'sputznik-sidebar-inserter' )
+        'name' 				=> 'Single Post Inline Widgets',
+        'description' => 'Appears in the single post content'
       )
     );
 
@@ -59,9 +59,9 @@ class SP_SBINS_ADMIN extends SP_SBINS_BASE {
 
   function register_sidebar( $sidebar ) {
     register_sidebar( array(
-      'name' 			    => $sidebar['name'],
       'id' 			      => $sidebar['id'],
-      'description' 	=> $sidebar['description'],
+      'name' 					=> sprintf( __( '%s', 'sputznik-sidebar-inserter' ), $sidebar['name'] ),
+      'description' 	=> sprintf( __( '%s', 'sputznik-sidebar-inserter' ), $sidebar['description'] ),
       'before_widget' => '<aside id="%1$s" class="widget %2$s">',
       'after_widget' 	=> "</aside>",
       'before_title' 	=> '<h3>',
