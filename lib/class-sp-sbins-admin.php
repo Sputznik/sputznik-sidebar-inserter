@@ -60,8 +60,8 @@ class SP_SBINS_ADMIN extends SP_SBINS_BASE {
   function register_sidebar( $sidebar ) {
     register_sidebar( array(
       'id' 			      => $sidebar['id'],
-      'name' 					=> sprintf( __( '%s', 'sputznik-sidebar-inserter' ), $sidebar['name'] ),
-      'description' 	=> sprintf( __( '%s', 'sputznik-sidebar-inserter' ), $sidebar['description'] ),
+      'name' 					=> __( $sidebar['name'], 'sputznik-sidebar-inserter' ),
+      'description' 	=> __( $sidebar['description'], 'sputznik-sidebar-inserter' ),
       'before_widget' => '<aside id="%1$s" class="widget %2$s">',
       'after_widget' 	=> "</aside>",
       'before_title' 	=> '<h3>',
