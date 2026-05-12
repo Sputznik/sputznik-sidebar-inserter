@@ -3,7 +3,7 @@
 Plugin Name: Sputznik Sidebar Inserter
 Plugin URI: https://sputznik.com
 Description: Plugin to insert sidebar above, below or between the post content
-Version: 1.0.0
+Version: 1.0.1
 Author: Stephen Anil (Sputznik)
 Author URI: https://sputznik.com
 Text Domain: sputznik-sidebar-inserter

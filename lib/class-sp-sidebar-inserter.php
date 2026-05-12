@@ -109,7 +109,7 @@ class SP_SIDEBAR_INSERTER extends SP_SBINS_BASE {
   private function get_dom_document( $content ){
     $doc = new DOMDocument();
     // DOMDocument doesn't support html5 tags. Hence, we are using LIBXML_NOERROR to suppress html5 errors
-    $doc->loadHTML( mb_convert_encoding( $content, 'HTML-ENTITIES', 'UTF-8' ), LIBXML_NOERROR );
+    $doc->loadHTML( mb_encode_numericentity( $content, [0x80, 0x10FFFF, 0, ~0], 'UTF-8' ), LIBXML_NOERROR );
     return $doc;
   }
 
